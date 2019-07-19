@@ -203,6 +203,9 @@ $ kubectl get nodes
 NAME                       STATUS   ROLES   AGE     VERSION
 aks-nodepool1-28993262-0   Ready    agent   3m18s   v1.9.11
 ```
+
+:exclamation: Vous pouvez également le visualiser dans le Web UI de Kubernetes en suivant les étapes de la partie #8.
+
 ## 6 - Exécuter des applications dans Azure Kubernetes Service (AKS)
 
 ### Etape 1: Mettre à jour le fichier manifeste
@@ -248,3 +251,46 @@ Quand l’adresse EXTERNAL-IP passe de l’état pending à une adresse IP publi
 azure-vote-front   10.0.34.242   52.179.23.131   80:30676/TCP   2m
 ```
 Pour voir l’application en action, ouvrez un navigateur web en utilisant l’adresse IP externe de votre service
+
+## 7 - Instrumenter le cluster Kubernetes avec le OneAgentOperator
+ 
+### Etape 1: Installer le OneAgentOperator
+Suivre les étapes d'installation ici https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/deploy-oneagent-on-kubernetes/ 
+<br/><br/>
+ou ici https://github.com/Dynatrace/dynatrace-oneagent-operator
+<br/><br/>
+Si vous êtes confronté à des problèmes d'installation, analysez les logs: https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/troubleshoot-oneagent-on-kubernetes/
+
+### Etape 2: Restart le container azure-vote-front
+Récupérer le nom du déploiement à restart:
+```shell
+$ kubectl -n dynatrace get deployments
+```
+Stop:
+```shell
+$ kubectl -n dynatrace scale deployments <name_of_deployment> --replicas=0
+```
+Restart:
+```shell
+$ kubectl -n dynatrace scale deployments <name_of_deployment> --replicas=1
+```
+
+
+## 8 - (Facultatif) Ouvrir le Kubernetes Web UI
+Le dashboard Kubernetes peut vous aider dans le déploiement. Vous pouvez y visualiser vos nodes, pods, services et secrets de votre cluster. <br/> <br/>
+Déployez le dashboard:
+```shell
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
+```
+Ouvrez un nouveau terminal et exécutez:
+```shell
+$ kubectl proxy
+```
+Le Web UI se trouvera à l'adresse: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+<br/> <br/> 
+Pour vous connectez avec un token: <br/>
+- Visualisez tous les secrets du cluster avec la commande:
+```shell
+$ kubectl -n kube-system get secret
+```
+- Recherchez dans les résultats le secret avec le nom " admin-user". Copiez le token associé et utilisez le pour vous identifiez dans le Web UI.
