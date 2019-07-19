@@ -187,7 +187,7 @@ Créez un cluster AKS:
 $ az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1 --service-principal <appId> --client-secret <password> --generate-ssh-keys
 ```
 
-### Etape 4: Installer l’interface de ligne de commande Kubernetes
+### Etape 4: Installer l’interface de ligne de commande Kubernetes kubectl
 ```shell
 $ az aks install-cli
 ```
