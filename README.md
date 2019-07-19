@@ -74,10 +74,9 @@ docker-compose down
 ## 4 - Déployer et utiliser Azure Container Registry
 
 ### Etape 0
-1) Connectez vous avec votre compte Dynatrace au portal Azure: https://portal.azure.com et vérifiez que vous êtes bien souscrit. 
-<br/>
+1) Connectez vous avec votre compte Dynatrace au portal Azure: https://portal.azure.com et vérifiez que vous êtes bien souscrit. <br/>
 ![Alt text](images/azure_subscription.PNG?raw=true "Title")
-<br/>
+
 2) Téléchargez l'Azure CLI sur votre machine: https://aka.ms/installazurecliwindows
 3) Ouvrez un terminal Windows et connectez vous à votre compte Dynatrace avec la commande *az login*. Si la page d'authentification ne s'affiche pas automatiquement, allez sur https://aka.ms/devicelogin:
 ```shell
@@ -99,7 +98,7 @@ az acr create --resource-group myResourceGroup --name myContainerRegistryName --
 az acr login --name myContainerRegistryName
 ```
 
-### Etape 2: Baliser une image conteneur
+### Etape 2: Baliser une image conteneur et l'envoyer à une instance ACR
   Afficher la liste des images locales actuelles: 
   ```shell
   $ docker images
@@ -109,11 +108,11 @@ az acr login --name myContainerRegistryName
   redis                        latest              a1b99da73d05        7 days ago          106MB
   tiangolo/uwsgi-nginx-flask   flask               788ca94b2313        9 months ago        694MB
   ```
-  Obtenez l’adresse du serveur de connexion: 
+  Obtenez l’adresse du serveur de connexion (acrLoginServer):
   ```shell
   $ az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
   ```
-  Balisez votre image azure-vote-front locale avec le résultat de la dernière commande (remplacez acrLoginServer):
+  Balisez votre image azure-vote-front locale avec l'acrLoginServer:
   ```shell
   $ docker tag azure-vote-front <acrLoginServer>/azure-vote-front:v1
   ```
@@ -128,12 +127,12 @@ az acr login --name myContainerRegistryName
   tiangolo/uwsgi-nginx-flask                           flask         788ca94b2313        8 months ago        694 MB
   ```
 
-### Etape 3: Envoyez l’image à votre instance ACR
-```shell
-docker push <acrLoginServer>/azure-vote-front:v1
-```
+  Envoyez l'image à votre instance ACR:
+  ```shell
+  docker push <acrLoginServer>/azure-vote-front:v1
+  ```
 
-### Etape 4: Créer la liste des images du registre
+### Etape 3: Vérifier que l'image a bien été ajouté au registre
 Liste des images qui ont été envoyées à votre instance ACR:
 ```shell
 az acr repository list --name myContainerRegistryName --output table
@@ -154,8 +153,56 @@ Result
 v1
 ```
 
+## 5 - Déployer un cluster Azure Kubernetes Service (AKS)
 
+### Etape 1: Créer un principal du service
+```shell
+az ad sp create-for-rbac --skip-assignment
+```
+```shell
+{
+  "appId": "e7596ae3-6864-4cb8-94fc-20164b1588a9",
+  "displayName": "azure-cli-2018-06-29-19-14-37",
+  "name": "http://azure-cli-2018-06-29-19-14-37",
+  "password": "52c95f25-bd1e-4314-bd31-d8112b293521",
+  "tenant": "72f988bf-86f1-41af-91ab-2d7cd011db48"
+}
+```
+Prenez note des valeurs de appId et de password.
 
+### Etape 2: Configurer une authentification ACR
 
+Obtenez l’ID de ressource ACR et mettez à jour le nom de Registre <acrName> avec celui de votre instance ACR et le groupe de ressources où se trouve cette instance:
+```shell
+az acr show --resource-group myResourceGroup --name myContainerRegistryName --query "id" --output tsv
+```
+Pour accorder l’accès qui permettra au cluster AKS de tirer (pull) des images stockées dans ACR, attribuez le rôle AcrPull: 
+```shell
+az role assignment create --assignee <appId> --scope <acrId> --role acrpull
+```
+  
+  
+### Etape 3: Créer un cluster Kubernetes
+Créez un cluster AKS: 
+```shell
+az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1 --service-principal <appId> --client-secret <password> --generate-ssh-keys
+```
 
+### Etape 4: Installer l’interface de ligne de commande Kubernetes
+```shell
+az aks install-cli
+```
+
+### Etape 5: Se connecter au cluster à l’aide de kubectl
+```shell
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+```
+Vérifier la connexion à votre cluster:
+```shell
+$ kubectl get nodes
+
+NAME                       STATUS   ROLES   AGE     VERSION
+aks-nodepool1-28993262-0   Ready    agent   3m18s   v1.9.11
+```
+## 6 - Exécuter des applications dans Azure Kubernetes Service (AKS)
 
