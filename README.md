@@ -2,7 +2,7 @@
 
 ## 1 - Description du projet
 L'objectif de ce document est de:
-1) déployer une application web multi-conteneurs dans Kubernetes sur Azure et instrumenter ce cluster Kubernetes avec le OneAgentOperator
+1) déployer une application web multiconteneurs dans Kubernetes sur Azure et instrumenter ce cluster Kubernetes avec le OneAgentOperator
 2) instrumenter avec Dynatrace une application mobile Android communiquant avec cette application
 
 ### 1.a - Présentation de l'application
@@ -21,14 +21,14 @@ L'application est une simple application test Microsoft où l'on peut voter pour
 
 ## 2 - Pré-requis: Souscrire à un compte Azure 
 
-Demander à GTG l’activation de visual-studio-msdn-activation sur votre compte Dynatrace. Une fois activé, vous bénéficierez de 45€ de crédit Azure par mois, bloqués et sans besoin de mettre de carte de crédit: https://gtg.dynatrace.com/solutions/609798-visual-studio-msdn-activation
+Demandez à GTG l’activation de visual-studio-msdn-activation sur votre compte Dynatrace. Une fois activé, vous bénéficierez de 45€ de crédit Azure par mois, bloqués et sans besoin de mettre de carte de crédit: https://gtg.dynatrace.com/solutions/609798-visual-studio-msdn-activation
 
 ## 3 - Préparer une application pour Azure Kubernetes Service (AKS)
 (Windows)
 
 ### Etape 1: Télécharger le code source de l'application
 
-Aller à l'adresse https://github.com/Azure-Samples/azure-voting-app-redis.git et cliquer sur le bouton "Clone or Download" puis "Download ZIP" pour télécharger le projet.
+Allez à l'adresse https://github.com/Azure-Samples/azure-voting-app-redis.git et cliquer sur le bouton "Clone or Download" puis "Download ZIP" pour télécharger le projet.
 
 ### Etape 2: Tester l’application multiconteneurs dans un environnement Docker local
 
@@ -42,7 +42,7 @@ $ docker-compose up -d
 Le fichier docker-compose.yaml définit les services de votre application afin de pouvoir les exécuter ensemble dans une environnement isolé.
 
 #### 2.2 - Vérifier que les conteneurs ont bien été crées
-Une fois terminé, utilisez la commande *docker images* pour afficher les images créée (3 images ont été téléchargées ou créées) :
+Affichez les images créée:
 ```shell
 $ docker images
 
@@ -51,7 +51,7 @@ azure-vote-front             latest     9cc914e25834        40 seconds ago      
 redis                        latest     a1b99da73d05        7 days ago          106MB
 tiangolo/uwsgi-nginx-flask   flask      788ca94b2313        9 months ago        694MB
 ```
-Exécutez la commande *docker ps* pour voir les conteneurs en cours d’exécution :
+Visualisez les conteneurs en cours d’exécution :
 ```shell
 $ docker ps
 
@@ -64,10 +64,9 @@ b68fed4b66b6        redis             "docker-entrypoint..."   57 seconds ago   
 Pour voir l’application en cours d’exécution, entrez http://localhost:8080 dans un navigateur web local.
 
 #### 2.4 - Supprimer des ressources
-Maintenant que la fonctionnalité de l’application a été validée, les conteneurs en cours d’exécution peuvent être arrêtés et supprimés. <br/>  
-Arrêtez et supprimez les instances et ressources de conteneur avec la commande *docker-compose down* :
+Maintenant que la fonctionnalité de l’application a été validée, arrêtez et supprimez les instances et ressources de conteneur:
 ```shell
-docker-compose down
+$ docker-compose down
 ```
 :exclamation: Ne supprimez pas les images de conteneur. Lorsque l’application locale a été supprimée, vous disposez d’une image Docker qui contient l’application Azure Vote, azure-vote-front.
 
@@ -78,28 +77,28 @@ docker-compose down
 ![Alt text](images/azure_subscription.PNG?raw=true "Title")
 
 2) Téléchargez l'Azure CLI sur votre machine: https://aka.ms/installazurecliwindows
-3) Ouvrez un terminal Windows et connectez vous à votre compte Dynatrace avec la commande *az login*. Si la page d'authentification ne s'affiche pas automatiquement, allez sur https://aka.ms/devicelogin:
+3) Ouvrez un terminal Windows et connectez vous à votre compte Dynatrace. Si la page d'authentification ne s'affiche pas automatiquement, allez sur https://aka.ms/devicelogin:
 ```shell
-az login
+$ az login
 ```
 
 ### Etape 1: Création d’un Azure Container Registry
 
 1) Créez un groupe de ressources nommé *myResourceGroup* créé dans la région *eastus*:
 ```shell
-az group create --name myResourceGroup --location eastus
+$ az group create --name myResourceGroup --location eastus
 ```
 2) Créez une instance Azure Container Registry nommé *myContainerRegistryName*:
 ```shell
-az acr create --resource-group myResourceGroup --name myContainerRegistryName --sku Basic
+$ az acr create --resource-group myResourceGroup --name myContainerRegistryName --sku Basic
 ```
 3) Connectez vous à ce registre (la commande devrait retourner le message *Login Succeeded*):
 ```shell
-az acr login --name myContainerRegistryName
+$ az acr login --name myContainerRegistryName
 ```
 
 ### Etape 2: Baliser une image conteneur et l'envoyer à une instance ACR
-  Afficher la liste des images locales actuelles: 
+  Affichez la liste des images locales actuelles: 
   ```shell
   $ docker images
 
@@ -112,11 +111,11 @@ az acr login --name myContainerRegistryName
   ```shell
   $ az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
   ```
-  Balisez votre image azure-vote-front locale avec l'acrLoginServer:
+  Balisez votre image azure-vote-front locale avec l'acrLoginServer et le tag v1:
   ```shell
   $ docker tag azure-vote-front <acrLoginServer>/azure-vote-front:v1
   ```
-  Vérifier que les étiquettes sont appliquées: 
+  Vérifiez que le tag a été appliqué: 
   ```shell
   $ docker images
   
@@ -129,13 +128,13 @@ az acr login --name myContainerRegistryName
 
   Envoyez l'image à votre instance ACR:
   ```shell
-  docker push <acrLoginServer>/azure-vote-front:v1
+  $ docker push <acrLoginServer>/azure-vote-front:v1
   ```
 
 ### Etape 3: Vérifier que l'image a bien été ajouté au registre
 Liste des images qui ont été envoyées à votre instance ACR:
 ```shell
-az acr repository list --name myContainerRegistryName --output table
+$ az acr repository list --name myContainerRegistryName --output table
 ```
 ```shell
 Result
@@ -145,7 +144,7 @@ azure-vote-front
 
 Les étiquettes d’une image spécifique:
 ```shell
-az acr repository show-tags --name myContainerRegistryName --repository azure-vote-front --output table
+$ az acr repository show-tags --name myContainerRegistryName --repository azure-vote-front --output table
 ```
 ```shell
 Result
@@ -157,7 +156,7 @@ v1
 
 ### Etape 1: Créer un principal du service
 ```shell
-az ad sp create-for-rbac --skip-assignment
+$ az ad sp create-for-rbac --skip-assignment
 ```
 ```shell
 {
@@ -174,28 +173,28 @@ Prenez note des valeurs de appId et de password.
 
 Obtenez l’ID de ressource ACR et mettez à jour le nom de Registre <acrName> avec celui de votre instance ACR et le groupe de ressources où se trouve cette instance:
 ```shell
-az acr show --resource-group myResourceGroup --name myContainerRegistryName --query "id" --output tsv
+$ az acr show --resource-group myResourceGroup --name myContainerRegistryName --query "id" --output tsv
 ```
 Pour accorder l’accès qui permettra au cluster AKS de tirer (pull) des images stockées dans ACR, attribuez le rôle AcrPull: 
 ```shell
-az role assignment create --assignee <appId> --scope <acrId> --role acrpull
+$ az role assignment create --assignee <appId> --scope <acrId> --role acrpull
 ```
   
   
 ### Etape 3: Créer un cluster Kubernetes
 Créez un cluster AKS: 
 ```shell
-az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1 --service-principal <appId> --client-secret <password> --generate-ssh-keys
+$ az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1 --service-principal <appId> --client-secret <password> --generate-ssh-keys
 ```
 
 ### Etape 4: Installer l’interface de ligne de commande Kubernetes
 ```shell
-az aks install-cli
+$ az aks install-cli
 ```
 
 ### Etape 5: Se connecter au cluster à l’aide de kubectl
 ```shell
-az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+$ az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
 ```
 Vérifier la connexion à votre cluster:
 ```shell
@@ -206,3 +205,46 @@ aks-nodepool1-28993262-0   Ready    agent   3m18s   v1.9.11
 ```
 ## 6 - Exécuter des applications dans Azure Kubernetes Service (AKS)
 
+### Etape 1: Mettre à jour le fichier manifeste
+```shell
+$ az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
+```
+
+Dans le référentiel git cloné, dans le répertoire *azure-voting-app-redis*, ouvrez le fichier manifeste *azure-vote-all-in-one-redis.yaml* avec un éditeur de texte et remplacez microsoft par le nom de votre serveur de connexion ACR:
+```shell
+containers:
+- name: azure-vote-front
+  image: microsoft/azure-vote-front:v1
+```
+Fichier modifié:
+```shell
+containers:
+- name: azure-vote-front
+  image: myContainerRegistryName.azurecr.io/azure-vote-front:v1
+```
+
+### Etape 2: Déployer l’application
+```shell
+$ kubectl apply -f azure-vote-all-in-one-redis.yaml
+
+deployment "azure-vote-back" created
+service "azure-vote-back" created
+deployment "azure-vote-front" created
+service "azure-vote-front" created
+```
+
+### Etape 3: Vérifier le déploiement
+
+```shell
+$ kubectl get service azure-vote-front --watch
+```
+
+Dans un premier temps, la valeur EXTERNAL-IP du service azure-vote-front est indiqué comme étant en attente (pending) :
+```shell
+azure-vote-front   10.0.34.242   <pending>     80:30676/TCP   7s
+```
+Quand l’adresse EXTERNAL-IP passe de l’état pending à une adresse IP publique réelle, utilisez CTRL-C pour arrêter le processus de surveillance kubectl.
+```shell
+azure-vote-front   10.0.34.242   52.179.23.131   80:30676/TCP   2m
+```
+Pour voir l’application en action, ouvrez un navigateur web en utilisant l’adresse IP externe de votre service
