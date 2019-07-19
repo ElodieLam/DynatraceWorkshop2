@@ -28,13 +28,11 @@ Demander à GTG l’activation de visual-studio-msdn-activation sur votre compte
 
 ### Etape 1: Télécharger le code source de l'application
 
-Aller à l'adresse https://github.com/Azure-Samples/azure-voting-app-redis.git et cliquer sur le bouton "Clone or Download" puis "Download ZIP" pour télécharger le projet. <br/><br/>
-
-Dans le répertoire azure-voting-app-redis se trouvent le code source de l’application, un fichier Docker Compose précréé et un fichier manifeste Kubernetes.
+Aller à l'adresse https://github.com/Azure-Samples/azure-voting-app-redis.git et cliquer sur le bouton "Clone or Download" puis "Download ZIP" pour télécharger le projet.
 
 ### Etape 2: Tester l’application multiconteneurs dans un environnement Docker local
 
-Vous pouvez utiliser Docker Compose pour automatiser la création d’images conteneur et le déploiement d’applications multiconteneurs.
+Dans le répertoire azure-voting-app-redis se trouvent le code source de l’application, un fichier Docker Compose précréé et un fichier manifeste Kubernetes. Vous pouvez utiliser Docker Compose pour automatiser la création d’images conteneur et le déploiement d’applications multiconteneurs.
 
 #### 2.1 - Créer l'image conteneur et démarrer l'application
 Après avoir installer Docker Compose: https://docs.docker.com/compose/install/, la commande suivante vous permet de créer l’image conteneur, téléchargez l’image Redis, puis démarrez l’application localement.
@@ -67,29 +65,97 @@ Pour voir l’application en cours d’exécution, entrez http://localhost:8080 
 
 #### 2.4 - Supprimer des ressources
 Maintenant que la fonctionnalité de l’application a été validée, les conteneurs en cours d’exécution peuvent être arrêtés et supprimés. <br/>  
-Arrêtez et supprimez les instances et ressources de conteneur avec la commande docker-compose down :
+Arrêtez et supprimez les instances et ressources de conteneur avec la commande *docker-compose down* :
 ```shell
 docker-compose down
 ```
-:exclamation: Ne supprimez pas les images de conteneur. Lorsque l’application locale a été supprimée, vous disposez d’une image Docker qui contient l’application Azure Vote, azure-front-front.
+:exclamation: Ne supprimez pas les images de conteneur. Lorsque l’application locale a été supprimée, vous disposez d’une image Docker qui contient l’application Azure Vote, azure-vote-front.
 
 ## 4 - Déployer et utiliser Azure Container Registry
 
 ### Etape 0
-1) Connectez vous avec votre compte Dynatrace au portal Azure: https://portal.azure.com et vérifiez que vous êtes bien souscrit.
+1) Connectez vous avec votre compte Dynatrace au portal Azure: https://portal.azure.com et vérifiez que vous êtes bien souscrit. 
+<br/>
 ![Alt text](images/azure_subscription.PNG?raw=true "Title")
-
+<br/>
 2) Téléchargez l'Azure CLI sur votre machine: https://aka.ms/installazurecliwindows
-3) Ouvrez un terminal Windows et connectez vous avec la commande az login:
+3) Ouvrez un terminal Windows et connectez vous à votre compte Dynatrace avec la commande *az login*. Si la page d'authentification ne s'affiche pas automatiquement, allez sur https://aka.ms/devicelogin:
 ```shell
 az login
 ```
-Si la page d'authentification ne s'affiche pas automatiquement, allez sur https://aka.ms/devicelogin
 
 ### Etape 1: Création d’un Azure Container Registry
 
-#### 1.1 - Créez un groupe de ressources 
-Exécutez la commande az group create pour créer un groupe de ressources nommé myResourceGroup créé dans la région eastus:
+1) Créez un groupe de ressources nommé *myResourceGroup* créé dans la région *eastus*:
 ```shell
 az group create --name myResourceGroup --location eastus
 ```
+2) Créez une instance Azure Container Registry nommé *myContainerRegistryName*:
+```shell
+az acr create --resource-group myResourceGroup --name myContainerRegistryName --sku Basic
+```
+3) Connectez vous à ce registre (la commande devrait retourner le message *Login Succeeded*):
+```shell
+az acr login --name myContainerRegistryName
+```
+
+### Etape 2: Baliser une image conteneur
+  Afficher la liste des images locales actuelles: 
+  ```shell
+  $ docker images
+
+  REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+  azure-vote-front             latest              4675398c9172        13 minutes ago      694MB
+  redis                        latest              a1b99da73d05        7 days ago          106MB
+  tiangolo/uwsgi-nginx-flask   flask               788ca94b2313        9 months ago        694MB
+  ```
+  Obtenez l’adresse du serveur de connexion: 
+  ```shell
+  $ az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
+  ```
+  Balisez votre image azure-vote-front locale avec le résultat de la dernière commande (remplacez acrLoginServer):
+  ```shell
+  $ docker tag azure-vote-front <acrLoginServer>/azure-vote-front:v1
+  ```
+  Vérifier que les étiquettes sont appliquées: 
+  ```shell
+  $ docker images
+  
+  REPOSITORY                                           TAG           IMAGE ID            CREATED             SIZE
+  azure-vote-front                                     latest        eaf2b9c57e5e        8 minutes ago       716 MB
+  mycontainerregistry.azurecr.io/azure-vote-front      v1            eaf2b9c57e5e        8 minutes ago       716 MB
+  redis                                                latest        a1b99da73d05        7 days ago          106MB
+  tiangolo/uwsgi-nginx-flask                           flask         788ca94b2313        8 months ago        694 MB
+  ```
+
+### Etape 3: Envoyez l’image à votre instance ACR
+```shell
+docker push <acrLoginServer>/azure-vote-front:v1
+```
+
+### Etape 4: Créer la liste des images du registre
+Liste des images qui ont été envoyées à votre instance ACR:
+```shell
+az acr repository list --name myContainerRegistryName --output table
+```
+```shell
+Result
+----------------
+azure-vote-front
+```
+
+Les étiquettes d’une image spécifique:
+```shell
+az acr repository show-tags --name myContainerRegistryName --repository azure-vote-front --output table
+```
+```shell
+Result
+--------
+v1
+```
+
+
+
+
+
+
