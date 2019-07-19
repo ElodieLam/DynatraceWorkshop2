@@ -98,7 +98,7 @@ $ az acr login --name myContainerRegistryName
 ```
 
 ### Etape 2: Baliser une image conteneur et l'envoyer à une instance ACR
-  Affichez la liste des images locales actuelles: 
+1) Affichez la liste des images locales actuelles: 
   ```shell
   $ docker images
 
@@ -107,15 +107,15 @@ $ az acr login --name myContainerRegistryName
   redis                        latest              a1b99da73d05        7 days ago          106MB
   tiangolo/uwsgi-nginx-flask   flask               788ca94b2313        9 months ago        694MB
   ```
-  Obtenez l’adresse du serveur de connexion (acrLoginServer):
+2) Obtenez l’adresse du serveur de connexion (acrLoginServer):
   ```shell
   $ az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
   ```
-  Balisez votre image azure-vote-front locale avec l'acrLoginServer et le tag v1:
+3) Balisez votre image azure-vote-front locale avec l'acrLoginServer et le tag v1:
   ```shell
   $ docker tag azure-vote-front <acrLoginServer>/azure-vote-front:v1
   ```
-  Vérifiez que le tag a été appliqué: 
+4)  Vérifiez que le tag a été appliqué: 
   ```shell
   $ docker images
   
@@ -126,13 +126,13 @@ $ az acr login --name myContainerRegistryName
   tiangolo/uwsgi-nginx-flask                           flask         788ca94b2313        8 months ago        694 MB
   ```
 
-  Envoyez l'image à votre instance ACR:
+5) Envoyez l'image à votre instance ACR:
   ```shell
   $ docker push <acrLoginServer>/azure-vote-front:v1
   ```
 
 ### Etape 3: Vérifier que l'image a bien été ajouté au registre
-Liste des images qui ont été envoyées à votre instance ACR:
+1) Liste des images qui ont été envoyées à votre instance ACR:
 ```shell
 $ az acr repository list --name myContainerRegistryName --output table
 ```
@@ -142,7 +142,7 @@ Result
 azure-vote-front
 ```
 
-Les étiquettes d’une image spécifique:
+2) Les étiquettes d’une image spécifique:
 ```shell
 $ az acr repository show-tags --name myContainerRegistryName --repository azure-vote-front --output table
 ```
@@ -204,7 +204,7 @@ NAME                       STATUS   ROLES   AGE     VERSION
 aks-nodepool1-28993262-0   Ready    agent   3m18s   v1.9.11
 ```
 
-:exclamation: Vous pouvez également le visualiser dans le Web UI de Kubernetes en suivant les étapes de la partie #8.
+:exclamation: Vous pouvez également le visualiser dans le Web UI de Kubernetes en suivant les étapes de la partie #8 - Ouvrir le Kubernetes Web UI.
 
 ## 6 - Exécuter des applications dans Azure Kubernetes Service (AKS)
 
@@ -262,15 +262,15 @@ ou ici https://github.com/Dynatrace/dynatrace-oneagent-operator
 Si vous êtes confronté à des problèmes d'installation, analysez les logs: https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/troubleshoot-oneagent-on-kubernetes/
 
 ### Etape 2: Restart le container azure-vote-front
-Récupérer le nom du déploiement à restart:
+1) Récupérer le nom du déploiement à restart:
 ```shell
 $ kubectl -n dynatrace get deployments
 ```
-Stop:
+2) Stop:
 ```shell
 $ kubectl -n dynatrace scale deployments <name_of_deployment> --replicas=0
 ```
-Restart:
+3) Restart:
 ```shell
 $ kubectl -n dynatrace scale deployments <name_of_deployment> --replicas=1
 ```
@@ -278,17 +278,17 @@ $ kubectl -n dynatrace scale deployments <name_of_deployment> --replicas=1
 
 ## 8 - (Facultatif) Ouvrir le Kubernetes Web UI
 Le dashboard Kubernetes peut vous aider dans le déploiement. Vous pouvez y visualiser vos nodes, pods, services et secrets de votre cluster. <br/> <br/>
-Déployez le dashboard:
+1) Déployez le dashboard:
 ```shell
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
 ```
-Ouvrez un nouveau terminal et exécutez:
+2) Ouvrez un nouveau terminal et exécutez:
 ```shell
 $ kubectl proxy
 ```
-Le Web UI se trouvera à l'adresse: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+3) Le Web UI se trouvera à l'adresse: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 <br/> <br/> 
-Pour vous connectez avec un token: <br/>
+4) Pour vous connectez avec un token: <br/>
 - Visualisez tous les secrets du cluster avec la commande:
 ```shell
 $ kubectl -n kube-system get secret
