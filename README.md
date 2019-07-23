@@ -37,15 +37,17 @@ Dans le répertoire *azure-voting-app-redis* se trouvent le code source de l’a
 #### 2.0 - Télécharger Docker
 Installez Docker Desktop for Windows: https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe
 
-:exclamation: Docker nécessite Hyper-V uniquement sous Windows 10. Il ne fonctionnera pas avec VMware Workstation ou Virtual Box. Sans Hyper-V Docker ne s'exécutera pas après l'installation de Docker. VirtualBox ne sera plus en mesure d'exécuter des machines virtuelles (vos images de VM resteront toujours). <br/> <br/>
+>:exclamation: Docker nécessite Hyper-V uniquement sous Windows 10. Il ne fonctionnera pas avec VMware Workstation ou Virtual Box. Sans Hyper-V Docker ne s'exécutera pas après l'installation de Docker. VirtualBox ne sera plus en mesure d'exécuter des machines virtuelles (vos images de VM resteront toujours). <br/>
 
-Pour activer Hyper-V: Windows features - Turn Windows features on or off
+> Pour activer Hyper-V: Windows features - Turn Windows features on or off
 
 #### 2.1 - Créer l'image conteneur et démarrer l'application
 Créez l’image conteneur, téléchargez l’image Redis, puis démarrez l’application localement.
 ```shell
 $ docker-compose up -d
 ```
+Docker-compose est normalement installé avec Docker Desktop. Sinon installez le: https://docs.docker.com/compose/install/
+
 
 #### 2.2 - Vérifier que les conteneurs ont bien été crées
 Affichez les images créée:
