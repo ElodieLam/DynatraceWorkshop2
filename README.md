@@ -263,11 +263,18 @@ Pour voir l’application en action, ouvrez un navigateur web en utilisant l’a
 ## 7 - Instrumenter le cluster Kubernetes avec le OneAgentOperator
  
 ### Etape 1: Installer le OneAgentOperator
-Suivre les étapes d'installation ici https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/deploy-oneagent-on-kubernetes/ 
+```shell
+$ kubectl create namespace dynatrace
+$ kubectl apply -f https://raw.githubusercontent.com/Dynatrace/dynatrace-oneagent-operator/master/deploy/kubernetes.yaml
+$ kubectl -n dynatrace logs -f deployment/dynatrace-oneagent-operator
+```
+Récupérez votre environmentID et paasToken et appliquez les commandes:
+```shell
+$ kubectl -n dynatrace create secret generic oneagent --from-literal="apiToken=DYNATRACE_API_TOKEN" --from-literal="paasToken=PLATFORM_AS_A_SERVICE_TOKEN"
+$ kubectl apply -f cr.yaml
+```
 <br/><br/>
-ou ici https://github.com/Dynatrace/dynatrace-oneagent-operator
-<br/><br/>
-Si vous êtes confronté à des problèmes d'installation, analysez les logs: https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/troubleshoot-oneagent-on-kubernetes/
+Si vous êtes confronté à des problèmes lors de l'installation, analysez les logs: https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/troubleshoot-oneagent-on-kubernetes/
 
 ### Etape 2: Restart le container azure-vote-front
 1) Récupérer le nom du déploiement à restart:
