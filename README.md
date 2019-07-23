@@ -34,8 +34,14 @@ Allez à l'adresse https://github.com/Azure-Samples/azure-voting-app-redis.git e
 
 Dans le répertoire azure-voting-app-redis se trouvent le code source de l’application, un fichier Docker Compose précréé et un fichier manifeste Kubernetes. Vous pouvez utiliser Docker Compose pour automatiser la création d’images conteneur et le déploiement d’applications multiconteneurs.
 
+#### 2.0 - Télécharger Docker
+Installez Docker Desktop for Windows: https://docs.docker.com/docker-for-windows/install/
+
+:exclamation: Docker nécessite Hyper-V uniquement sous Windows 10. Il ne fonctionnera pas avec VMware Workstation ou Virtual Box. Sans Hyper-V Docker ne s'exécutera pas après l'installation de Docker. VirtualBox ne sera plus en mesure d'exécuter des machines virtuelles (vos images de VM resteront toujours). <br/>
+Pour activer Hyper-V: Windows features - Turn Windows features on or off
+
 #### 2.1 - Créer l'image conteneur et démarrer l'application
-Après avoir installer Docker Compose: https://docs.docker.com/compose/install/, la commande suivante vous permet de créer l’image conteneur, téléchargez l’image Redis, puis démarrez l’application localement.
+Créez l’image conteneur, téléchargez l’image Redis, puis démarrez l’application localement.
 ```shell
 $ docker-compose up -d
 ```
