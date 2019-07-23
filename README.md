@@ -273,7 +273,7 @@ Récupérez votre environmentID et paasToken et appliquez les commandes:
 $ kubectl -n dynatrace create secret generic oneagent --from-literal="apiToken=DYNATRACE_API_TOKEN" --from-literal="paasToken=PLATFORM_AS_A_SERVICE_TOKEN"
 $ kubectl apply -f cr.yaml
 ```
-<br/><br/>
+<br/>
 Si vous êtes confronté à des problèmes lors de l'installation, analysez les logs: https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/installation-and-operation/full-stack/troubleshoot-oneagent-on-kubernetes/
 
 ### Etape 2: Restart le container azure-vote-front
