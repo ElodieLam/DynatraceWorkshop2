@@ -1,23 +1,27 @@
 # DynatraceWorkshop2
 
+L'objectif de ce document est de:
+1) déployer une application web multiconteneurs dans Kubernetes sur Azure et instrumenter ce cluster Kubernetes avec le OneAgentOperator
+2) instrumenter avec Dynatrace une application mobile Android communiquant avec cette application
+
 ### Sommaire
 
-1 - Description du projet <br/>
+Partie 1: <br/> <br/> 
+
+1 -  Présentation de l'application <br/>
 2 - Pré-requis: Souscrire à un compte Azure  <br/>
 3 - Préparer une application pour Azure Kubernetes Service (AKS) <br/>
 4 - Déployer et utiliser Azure Container Registry <br/>
 5 - Déployer un cluster Azure Kubernetes Service (AKS) <br/>
 6 - Exécuter des applications dans Azure Kubernetes Service (AKS) <br/>
 7 - Instrumenter le cluster Kubernetes avec le OneAgentOperator <br/>
-8 - (Facultatif) Ouvrir le Kubernetes Web UI <br/> 
-9 - Instrumenter une application mobile <br/><br/>
+8 - (Facultatif) Ouvrir le Kubernetes Web UI <br/> <br/> 
 
-## 1 - Description du projet
-L'objectif de ce document est de:
-1) déployer une application web multiconteneurs dans Kubernetes sur Azure et instrumenter ce cluster Kubernetes avec le OneAgentOperator
-2) instrumenter avec Dynatrace une application mobile Android communiquant avec cette application
+Partie 2: <br/> <br/> 
 
-### Présentation de l'application
+Instrumenter une application mobile <br/><br/>
+
+## 1 - Présentation de l'application
 
 L'application est une simple application test Microsoft où l'on peut voter pour son animal préféré. <br>
 
