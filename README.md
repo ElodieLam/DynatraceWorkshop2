@@ -35,7 +35,7 @@ Téléchargez le code source à l'adresse https://github.com/Azure-Samples/azure
 Dans le répertoire *azure-voting-app-redis* se trouvent le code source de l’application, un fichier Docker Compose précréé et un fichier manifeste Kubernetes. Vous pouvez utiliser Docker Compose pour automatiser la création d’images conteneur et le déploiement d’applications multiconteneurs.
 
 #### 2.0 - Télécharger Docker
-Installez Docker Desktop for Windows: https://docs.docker.com/docker-for-windows/install/
+Installez Docker Desktop for Windows: https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe
 
 :exclamation: Docker nécessite Hyper-V uniquement sous Windows 10. Il ne fonctionnera pas avec VMware Workstation ou Virtual Box. Sans Hyper-V Docker ne s'exécutera pas après l'installation de Docker. VirtualBox ne sera plus en mesure d'exécuter des machines virtuelles (vos images de VM resteront toujours). <br/> <br/>
 
