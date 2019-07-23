@@ -6,7 +6,7 @@ L'objectif de ce document est de:
 
 ### Sommaire
 
-Partie 1: <br/> <br/> 
+Partie 1: <br/>
 
 1 -  Présentation de l'application <br/>
 2 - Pré-requis: Souscrire à un compte Azure  <br/>
@@ -17,7 +17,7 @@ Partie 1: <br/> <br/>
 7 - Instrumenter le cluster Kubernetes avec le OneAgentOperator <br/>
 8 - (Facultatif) Ouvrir le Kubernetes Web UI <br/> <br/> 
 
-Partie 2: <br/> <br/> 
+Partie 2: <br/>
 
 Instrumenter une application mobile <br/><br/>
 
