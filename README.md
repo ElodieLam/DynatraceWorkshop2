@@ -15,7 +15,7 @@ Partie 1: <br/>
 5 - Déployer un cluster Azure Kubernetes Service (AKS) <br/>
 6 - Exécuter des applications dans Azure Kubernetes Service (AKS) <br/>
 7 - Instrumenter le cluster Kubernetes avec le OneAgentOperator <br/>
-8 - (Facultatif) Ouvrir le Kubernetes Web UI <br/> <br/> 
+8 - (Facultatif) Utiliser le Kubernetes Web UI <br/> <br/> 
 
 Partie 2: <br/>
 
@@ -220,7 +220,7 @@ NAME                       STATUS   ROLES   AGE     VERSION
 aks-nodepool1-28993262-0   Ready    agent   3m18s   v1.9.11
 ```
 
-:exclamation: Vous pouvez également le visualiser dans le Web UI de Kubernetes en suivant les étapes de la partie #8 - Ouvrir le Kubernetes Web UI.
+:exclamation: Vous pouvez également le visualiser dans le Web UI de Kubernetes en suivant les étapes de la partie #8 - Utiliser le Kubernetes Web UI.
 
 ## 6 - Exécuter des applications dans Azure Kubernetes Service (AKS)
 
@@ -299,7 +299,7 @@ $ kubectl -n dynatrace scale deployments <name_of_deployment> --replicas=1
 ```
 
 
-## 8 - (Facultatif) Ouvrir le Kubernetes Web UI
+## 8 - (Facultatif) Utiliser le Kubernetes Web UI
 Le dashboard Kubernetes peut vous aider dans le déploiement. Vous pouvez y visualiser vos nodes, pods, services et secrets de votre cluster. <br/> <br/>
 1) Déployez le dashboard:
 ```shell
