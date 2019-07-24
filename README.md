@@ -346,7 +346,7 @@ Téléchargez le code source:
 - Une fois que vous avez fourni un nom à votre application, cliquez sur Create mobile app. 
 
 ### Etape 2: Adapter le code source pour votre environnement
-Dans AndroidStudio, 
+Dans le fichier MainActivity.java du projet, 
 - Ligne 44: Modifiez l'adresse IP du server (remplacez avec l'adresse IP de votre service Azure)
 - Ligne 73: Modifiez l'applicationID et le beaconUrl (à récupérer au niveau de l'application que vous venez de créer dans Dynatrace)
 - Ligne 89: Méthode où est créer l'action utilisateur dans Dynatrace. Vous pouvez modifier le nom de l'action ici.
