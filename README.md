@@ -19,7 +19,11 @@ Partie 1: <br/>
 
 Partie 2: <br/>
 
-Instrumenter une application mobile <br/><br/>
+1 - Présentation de l'application
+2 - Installer l'application mobile
+3 - Instrumenter l'application avec Dynatrace <br/><br/>
+
+# Partie 1
 
 ## 1 - Présentation de l'application
 
@@ -36,7 +40,7 @@ Demandez à GTG l’activation de visual-studio-msdn-activation sur votre compte
 
 ### Etape 1: Télécharger le code source de l'application
 
-Téléchargez le code source à l'adresse https://github.com/Azure-Samples/azure-voting-app-redis.git 
+Téléchargez le code source: https://github.com/Azure-Samples/azure-voting-app-redis/archive/master.zip
 
 ### Etape 2: Tester l’application multiconteneurs dans un environnement Docker local
 
@@ -317,3 +321,33 @@ $ kubectl proxy
 $ kubectl -n kube-system get secret
 ```
 - Recherchez dans les résultats le secret avec le nom " admin-user". Copiez le token associé et utilisez le pour vous identifiez dans le Web UI.
+
+# Partie 2
+
+## 1 - Présentation de l'application
+![Alt text](images/androidMobileApp.PNG?raw=true "Title")
+
+## 2 - Installer l'application mobile
+
+### Etape 1: Installer Android Studio
+Télécharger Android Studio pour Windows: https://developer.android.com/studio
+
+### Etape 2: Télécharger le code source de l'application
+Téléchargez le code source: 
+
+### Etape 3: Créer une machine virtuel Android
+![Alt text](images/createAndroidDevice.PNG?raw=true "Title")
+
+## 3 - Instrumenter l'application avec Dynatrace
+
+### Etape 1: Créer une application mobile dans votre environnement Dynatrace
+- Sélectionnez Deploy Dynatrace dans le menu de navigation.
+- Cliquez sur le bouton Set up mobile monitoring. Vous serez redirigé vers une page où vous entrez le nom de votre application mobile.
+- Une fois que vous avez fourni un nom à votre application, cliquez sur Create mobile app. 
+
+### Etape 2: Adapter le code source pour votre environnement
+Dans AndroidStudio, 
+- Ligne 44: Modifiez l'adresse IP du server (remplacez avec l'adresse IP de votre service Azure)
+- Ligne 73: Modifiez l'applicationID et le beaconUrl (à récupérer au niveau de l'application que vous venez de créer dans Dynatrace)
+- Ligne 89: Méthode où est créer l'action utilisateur dans Dynatrace. Vous pouvez modifier le nom de l'action ici.
+![Alt text](images/createUserAction.PNG?raw=true "Title")
