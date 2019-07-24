@@ -19,8 +19,8 @@ Partie 1: <br/>
 
 Partie 2: <br/>
 
-1 - Présentation de l'application
-2 - Installer l'application mobile
+1 - Présentation de l'application<br/>
+2 - Installer l'application mobile<br/>
 3 - Instrumenter l'application avec Dynatrace <br/><br/>
 
 # Partie 1
