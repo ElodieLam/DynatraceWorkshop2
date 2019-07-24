@@ -338,10 +338,6 @@ Téléchargez le code source: https://github.com/ElodieLam/DynatraceWorkshop2/ar
 ### Etape 3: Créer une machine virtuel Android
 ![Alt text](images/createAndroidDevice.PNG?raw=true "Title")
 
-### Etape 4: Exécuter l'application
-- Cliquez sur le bouton "Play" en vert
-- Sélectionner la machine que vous venez de créer
-- Cliquez sur Ok et l'application se lancera automatiquement
 
 ## 3 - Instrumenter l'application avec Dynatrace
 
@@ -356,3 +352,8 @@ Dans le fichier MainActivity.java du projet,
 - Ligne 73: Modifiez l'applicationID et le beaconUrl (à récupérer au niveau de l'application que vous venez de créer dans Dynatrace)
 - Ligne 89: Méthode où est créer l'action utilisateur dans Dynatrace. Vous pouvez modifier le nom de l'action ici.
 ![Alt text](images/createUserAction.PNG?raw=true "Title")
+
+## 4 - Exécuter l'application
+- Cliquez sur le bouton "Play" en vert
+- Sélectionner la machine que vous venez de créer
+- Cliquez sur Ok et l'application se lancera automatiquement
