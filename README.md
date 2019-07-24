@@ -358,3 +358,4 @@ Dans le fichier MainActivity.java du projet,
 - Cliquez sur le bouton "Play" en vert
 - Sélectionner la machine que vous venez de créer
 - Cliquez sur Ok et l'application se lancera automatiquement
+- Effectuez quelques actions et elles apparaîtront dans Dynatrace
