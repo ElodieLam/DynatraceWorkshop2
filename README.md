@@ -338,6 +338,11 @@ Téléchargez le code source: https://github.com/ElodieLam/DynatraceWorkshop2/ar
 ### Etape 3: Créer une machine virtuel Android
 ![Alt text](images/createAndroidDevice.PNG?raw=true "Title")
 
+### Etape 4: Exécuter l'application
+- Cliquez sur le bouton "Play" en vert
+- Sélectionner la machine que vous venez de créer
+- Cliquez sur Ok et l'application se lancera automatiquement
+
 ## 3 - Instrumenter l'application avec Dynatrace
 
 ### Etape 1: Créer une application mobile dans votre environnement Dynatrace
