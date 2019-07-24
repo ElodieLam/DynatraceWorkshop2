@@ -333,7 +333,7 @@ $ kubectl -n kube-system get secret
 Télécharger Android Studio pour Windows: https://developer.android.com/studio
 
 ### Etape 2: Télécharger le code source de l'application
-Téléchargez le code source: 
+Téléchargez le code source: https://github.com/ElodieLam/DynatraceWorkshop2/archive/master.zip
 
 ### Etape 3: Créer une machine virtuel Android
 ![Alt text](images/createAndroidDevice.PNG?raw=true "Title")
