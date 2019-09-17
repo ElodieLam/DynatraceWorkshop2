@@ -40,9 +40,10 @@ public class MainActivity extends AppCompatActivity
 
     private TextView tvServerResponse;
 
-    //Set the server's IP (l'adresse de votre service Azure):
-    private static final String SERVER = "http://40.117.119.80/";
-    //Set your username:
+    //A modifier: l'adresse de votre service Azure
+    private static final String SERVER = "http://168.62.186.148/"; //"http://13.73.138.121/";
+
+    //A modifier: votre nom d'utilisateur
     private static final String userId = "android.studio@android.com";
 
     @Override
@@ -68,63 +69,89 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Start the OneAgent
-        //Set you
+        //---------------Start the OneAgent
         Dynatrace.startup(this, new DynatraceConfigurationBuilder("b763f69a-f01d-4b58-b914-18fcc40740ae", "https://bf89185syo.bf-sprint.dynatracelabs.com/mbeacon")
                 //Here you can add configurations
                 .buildConfiguration());
+        //---------------
 
-        //GET CURRENT SCORE button
         tvServerResponse = findViewById(R.id.textView);
         Button contactServerButton = findViewById(R.id.btn_get);
         contactServerButton.setOnClickListener(onSendClickListener);
 
-        //vote for Cats button
         Button catsButton = findViewById(R.id.btn_cats);
         catsButton.setOnClickListener(onCatsClickListener);
 
+        Button dogsButton = findViewById(R.id.btn_dogs);
+        dogsButton.setOnClickListener(onDogsClickListener);
+
     }
 
-    //GET CURRENT SCORE button listener
+    //Bouton Get Current Score
     View.OnClickListener onSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            //Start the user action
+            //---------------Début de la User action
             DTXAction clickAction = Dynatrace.enterAction("Click on GET CURRENT SCORE button");
 
-            // ...do some work here...
+            //Interoge le serveur et récupère le score actuel
             HttpGetRequest request = new HttpGetRequest();
             request.execute();
-            //Log.i("GET", "Click on Get SCORE");
 
+            //---------------Identification de l'utilisateur
             Dynatrace.identifyUser(userId);
 
-            //End the action after the request is completed
+            //---------------Fin de la User action
             clickAction.leaveAction();
         }
     };
 
-    //Vote for CATS button listener
+    //Bouton CATS
     View.OnClickListener onCatsClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // start user action
+
+            //---------------Début de la User action
             DTXAction clickAction = Dynatrace.enterAction("Click on CATS button");
 
-            // ...do some work here...
+            /* En chantier
             HttpPostRequest request = new HttpPostRequest();
             request.execute();
             Log.i("CATS", "Click on Cats");
+            */
 
+            //---------------Identification de l'utilisateur
             Dynatrace.identifyUser(userId);
 
-            // end the action after the request is completed
+            //---------------Fin de la User action
             clickAction.leaveAction();
         }
     };
 
-    //Send the GET CURRENT SCORE request to the server method:
+    //Bouton DOGS
+    View.OnClickListener onDogsClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            //---------------Début de la User action
+            DTXAction clickAction = Dynatrace.enterAction("Click on DOGS button");
+
+            /* En chantier
+            HttpPostRequest request = new HttpPostRequest();
+            request.execute();
+            Log.i("CATS", "Click on Dogs");
+            */
+
+            //---------------Identification de l'utilisateur
+            Dynatrace.identifyUser(userId);
+
+            //---------------Fin de la User action
+            clickAction.leaveAction();
+        }
+    };
+
+    //Méthode Get pour récupérer le score
     public class HttpGetRequest extends AsyncTask<Void, Void, String> {
 
         static final String REQUEST_METHOD = "GET";
@@ -164,7 +191,7 @@ public class MainActivity extends AppCompatActivity
 
             } catch(IOException e) {
                 e.printStackTrace();
-                result = "error";
+                result = "Error: Failed to connect to the server";
             }
 
             return result;
@@ -178,7 +205,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //Send the POST vote request to the server method:
+    //En chantier: Méthode Post pour mettre à jour le score
     public class HttpPostRequest extends AsyncTask<Void, Void, String> {
 
         static final String REQUEST_METHOD = "POST";
